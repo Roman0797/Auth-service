@@ -1,16 +1,13 @@
-# This is a sample Python script.
+import json
+from flask import Flask, request, jsonify
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+app = Flask(__name__)
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+@app.route('/', methods=['POST'])
+def authorize_user():
+    record = json.loads(request.data)
+    return jsonify(record)
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+
+app.run(debug=True)

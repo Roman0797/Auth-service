@@ -8,11 +8,12 @@ sql.execute("""
         id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
         login TEXT,
         password TEXT,
-        token TEXT
+        token TEXT,
+        ip TEXT
     );
 """)
 
 db.commit()
 
-sql.execute("INSERT INTO users VALUES (?, ?, ?, ?)", (1, 'User', 'qwe', 'QwE1'))
+sql.execute("INSERT INTO users VALUES (?, ?, ?, ?, ?)", (1, 'User', 'qwe', 'QwE1', '127.0.0.1'))
 db.commit()

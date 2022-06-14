@@ -7,16 +7,18 @@ db = sqlite3.connect('server.db')
 sql = db.cursor()
 
 
-# sql.execute("""
-#     CREATE TABLE IF NOT EXISTS users (
-#         id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-#         login TEXT,
-#         password TEXT,
-#         token TEXT,
-#         ip TEXT
-#     );
-# """)
-# db.commit()
+def table_creation_db():
+    sql.execute("""
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+            login TEXT,
+            password TEXT,
+            token TEXT,
+            ip TEXT
+        );
+    """)
+    db.commit()
+
 
 def encode_auth_token(user, user_id):
     try:
@@ -43,8 +45,9 @@ def user_creation(user, user_id, password, ip):
     db.commit()
 
 
-sqlite_select_query = """SELECT * from users"""
-cursor = db.cursor()
-cursor.execute(sqlite_select_query)
-records = cursor.fetchall()
-print(records)
+def show_table_users():
+    sqlite_select_query = """SELECT * from users"""
+    cursor = db.cursor()
+    cursor.execute(sqlite_select_query)
+    records = cursor.fetchall()
+    print(records)

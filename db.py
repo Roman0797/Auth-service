@@ -2,20 +2,30 @@ import jwt, datetime, time
 from flask import jsonify, g
 import sqlite3
 
-
 SECRET_KEY = "bearer token"
 db = sqlite3.connect('server.db')
 sql = db.cursor()
 
 
-def encode_auth_token():
+# sql.execute("""
+#     CREATE TABLE IF NOT EXISTS users (
+#         id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+#         login TEXT,
+#         password TEXT,
+#         token TEXT,
+#         ip TEXT
+#     );
+# """)
+# db.commit()
+
+def encode_auth_token(user, user_id):
     try:
         payload = {
             'exp': datetime.datetime.utcnow() + datetime.timedelta(days=2, seconds=10),
             'iat': datetime.datetime.utcnow(),
-            'iss': 'User_2',
+            'iss': user,
             'data': {
-                'id': 3,
+                'id': user_id,
             }
         }
         return jwt.encode(
@@ -27,20 +37,11 @@ def encode_auth_token():
         return e
 
 
-sql.execute("""
-    CREATE TABLE IF NOT EXISTS users (
-        id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-        login TEXT,
-        password TEXT,
-        token TEXT,
-        ip TEXT
-    );
-""")
+def user_creation(user, user_id, password, ip):
+    token = encode_auth_token(user=user, user_id=user_id)
+    sql.execute("INSERT INTO users VALUES (?, ?, ?, ?, ?)", (user_id, user, password, token, ip))
+    db.commit()
 
-db.commit()
-
-sql.execute("INSERT INTO users VALUES (?, ?, ?, ?, ?)", (3, 'User_2', 'qwe_2', encode_auth_token(), '127.0.0.3'))
-db.commit()
 
 sqlite_select_query = """SELECT * from users"""
 cursor = db.cursor()

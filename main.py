@@ -20,7 +20,7 @@ users = dict()
 
 
 @app.route('/', methods=['POST'])
-@limiter.limit("3/minute")
+@limiter.limit("60/minute")
 def authorize_user():
     token = request.headers.get('Authorization').split()[1]
     success = verify_token(token)

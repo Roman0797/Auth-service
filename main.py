@@ -26,7 +26,7 @@ def authorize_user():
     success = verify_token(token)
     users[request.remote_addr] = success
     if success:
-        data = {'message': 'Done', 'code': 'SUCCESS'}
+        data = {'message': 'Выполнено', 'code': 'УСПЕХ'}
         return make_response(jsonify(data), 200)
     else:
         return make_response(
@@ -39,7 +39,7 @@ def authorize_user():
 
 @app.route('/test', methods=['GET'])
 def auth_test():
-    message = {'message': 'Authorized', 'code': 'SUCCESS'} if users.get(request.remote_addr) else {
+    message = {'message': 'Авторизован', 'code': 'УСПЕХ'} if users.get(request.remote_addr) else {
         "message": "Пожалуйста, передайте правильную информацию заголовка подтверждения"}
     response_code = 200 if users.get(request.remote_addr) else 401
     return make_response(jsonify(message), response_code)
